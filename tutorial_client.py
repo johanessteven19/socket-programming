@@ -33,7 +33,10 @@ def main():
                 command = input(">")
                 if command == "do":
                     # STILL EXAMPLE MIGHT CHANGE LATER
-                    send_message = task.get()
+                    # parameter = task.get()
+                    # send_message = doTask(parameter.split(","))
+                    param = pArr(task.get())
+                    # send_message = doTask(param)
                     sc.send(send_message.encode(format))
                     print(f"1 task done, remaining task: {str(task.qsize())}")
                 elif command == "done":
@@ -52,6 +55,40 @@ def main():
             task.put(command_bytes)
     sc.close()
 
+
+def pArr(param):
+    li = param.split(",")
+    for i in range(len(li)): 
+        li[i] = int(li[i])
+    return li
+
+
+
+    # TODO:
+    # MAKE doTask(array):
+    # mean = mean(array) 
+    # median = median(array)
+    # modus = modus(array)
+    # sort = bubleSort(array)
+    # result = """
+    # return f" Mean :{mean}; median :{median}; Modus :{modus}; Sorted :{Sort}
+    #           
+
+    # TODO:
+    # Make mean(array):
+    # return string
+
+    # TODO:
+    # Make median(array):
+    #  return string
+
+    # TODO:
+    # Make modus(array):
+    # return string
+
+    # TODO:
+    # make bubbleSort(array):
+    # return string
 
 
     # NOTES
