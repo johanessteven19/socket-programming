@@ -4,7 +4,7 @@ import socket
 from queue import Queue
 
 SERVER_IP = "127.0.0.1"
-SERVER_PORT = 4322
+SERVER_PORT = 8086
 BUFFER_SIZE = 1024
 
 format = "UTF-8"
@@ -13,8 +13,21 @@ def main():
     sc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sc.connect((SERVER_IP, SERVER_PORT))
     print(f"Connected to Server([IP:{SERVER_IP}],[PORT:{SERVER_PORT}]")
-    status = True
+    status = False
     task = Queue(maxsize=3)
+    
+    print('Enter password to continue')
+    psw = input('>')
+    send_message = psw
+    sc.send(send_message.encode(format))
+    command = sc.recv(BUFFER_SIZE)
+    command_bytes = command.decode(format)
+    if command_bytes == 'Wrong password':
+        print('Wrong password')
+        sc.close()
+    else:
+        status = True
+
     while status:
         print(". . .")
         command = sc.recv(BUFFER_SIZE)

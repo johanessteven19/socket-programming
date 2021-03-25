@@ -6,7 +6,7 @@ import random
 from typing import Tuple
 
 SERVER_NAME = ""
-SERVER_PORT = 4322
+SERVER_PORT = 8086
 BUFFER_SIZE = 1024
 
 format = "UTF-8"
@@ -14,9 +14,27 @@ format = "UTF-8"
 
 def socket_handler(connection: socket.socket, address: Tuple[str, int]):
     print(f"Receive connection from [{address}]")
-    status = True
-
-    while status:   
+    
+    print(f'Asking for password from {address}')
+    pStatus = True
+    status = False
+    while pStatus:
+        input_message = connection.recv(BUFFER_SIZE)  
+        input_decode = input_message.decode(format)          
+        if input_decode == "password":
+            print(f'[{address}] entered the correct password')
+            status = True
+            pStatus = False
+            send_message = "bener"
+            connection.send(send_message.encode(format))
+        else:
+            print(f"[{address}] entered the wrong password") 
+            print('Connection will be terminated')
+            send_message = "Wrong password"
+            connection.send(send_message.encode(format))
+            pStatus = False
+            connection.close()
+    while status:
         command = input("Input Command: ")
         if command == "send":
             send_message = input(">")
