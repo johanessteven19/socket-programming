@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import socket
+from scipy import stats
 from queue import Queue
 
 SERVER_IP = "127.0.0.1"
@@ -92,11 +93,7 @@ def mean(array):
     return str(m)
 
 def modus(array):
-    max_value = array[0]
-    for element in array:
-        if element > max_value:
-            max_value = element
-    return str(max_value)
+    return str(stats.mode(array)[0][0])
 
 def median(array):
     lstLen = len(array)
