@@ -70,6 +70,13 @@ def mean(array):
     mean = sum / counter
     return str(mean)
 
+def modus(array):
+    max_value = array[0]
+    for element in array:
+        if element > max_value:
+            max_value = element
+    return str(max_value)
+
     # TODO:
     # MAKE doTask(array):
     # mean = mean(array) 
