@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import socket
-from scipy import stats
 from queue import Queue
 
 SERVER_IP = "127.0.0.1"
@@ -75,8 +74,8 @@ def doTask(num_list):
     m = modus(num_list)
     o = bubbleSort(num_list)
     g = median(num_list)
-    u = smallest(o)
-    s = highest(o)
+    u = smallest(num_list)
+    s = highest(num_list)
     result = f'mean: {a}, modus: {m}, sorted: {o}, median: {g}, smallest value: {u}, highest value: {s}'
     return result
 
@@ -97,10 +96,10 @@ def mean(array):
 def modus(array):
     dic = {}
 
-    for element in li:
+    for element in array:
         dic[element] = 0
 
-    for element in li:
+    for element in array:
         dic[element] += 1
 
     max_freq = 0
