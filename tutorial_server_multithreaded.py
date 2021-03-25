@@ -49,6 +49,11 @@ def socket_handler(connection: socket.socket, address: Tuple[str, int]):
                     wStatus = False
                 else:
                     print(f"Output receive: {input_decode}")
+        elif command == "revert":
+            send_message = "revert"
+            connection.send(send_message.encode(format))
+            print("Worker's queue is cleared")
+
     
     print(f"Connection with [{address}] is lost")            
     connection.close()

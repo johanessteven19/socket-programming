@@ -14,7 +14,7 @@ def main():
     sc.connect((SERVER_IP, SERVER_PORT))
     print(f"Connected to Server([IP:{SERVER_IP}],[PORT:{SERVER_PORT}]")
     status = True
-    task = Queue()
+    task = Queue(maxsize=3)
     
     while status:
         print(". . .")
@@ -22,9 +22,9 @@ def main():
         command_bytes = command.decode(format)
         if command_bytes == "check":
             print("Server is checking your status")
-            size = str(task.qsize())
-            send_message = size.encode(format)
-            sc.send(send_message)
+            # checkStat(task)
+            send_message = checkStat(task)
+            sc.send(send_message.encode(format))
         elif command_bytes == "wait":
             print("Server is waiting for your input")
             # DO TASK HERE
@@ -50,9 +50,17 @@ def main():
                         send_message = "done"
                         sc.send(send_message.encode(format))
                         tStatus = False
+        elif command_bytes == "revert":
+            task.queue.clear()
+            print("Queue is cleared by the server")
         else:
             print("Server has sent you something")
-            task.put(command_bytes)
+            if not task.full():
+                task.put(command_bytes)
+            else:
+                send_message = "Queue is full"
+                sc.send(send_message.encode(format))
+
     sc.close()
 
 def doTask(num_list):
@@ -113,45 +121,13 @@ def partition(num_list, first_index, last_index):
     num_list[i], num_list[last_index] = num_list[last_index], num_list[i]
     return i
 
-    # TODO:
-    # MAKE doTask(array):
-    # mean = mean(array) 
-    # median = median(array)
-    # modus = modus(array)
-    # sort = bubleSort(array)
-    # result = """
-    # return f" Mean :{mean}; median :{median}; Modus :{modus}; Sorted :{Sort}
-    #           
+def checkStat(que):
+    x = que.qsize()
+    if x < 1:
+        return "Idle"
+    elif x > 0:
+        return f"Working on {x} task(s)"
 
-    # TODO:
-    # Make mean(array):
-    # return string
-
-    # TODO:
-    # Make median(array):
-    #  return string
-
-    # TODO:
-    # Make modus(array):
-    # return string
-
-    # TODO:
-    # make bubbleSort(array):
-    # return string
-
-
-    # NOTES
-    # print("Example Socket Client Program")
-
-    # input_value = input("Enter a string to send to the server: ")
-    # input_value_bytes = input_value.encode("UTF-8")
-    # sc.send(input_value_bytes)
-
-    # output_value_bytes = sc.recv(BUFFER_SIZE)
-    # output_value = output_value_bytes.decode("UTF-8")
-    # print(output_value)
-
-    # sc.close()
 
 if __name__ == "__main__":
     main()
