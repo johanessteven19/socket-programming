@@ -62,7 +62,13 @@ def pArr(param):
         li[i] = int(li[i])
     return li
 
-
+def mean(array):
+    sum, counter, mean = 0, 0, 0
+    for i in range(len(array)):
+        sum += array[i]
+        counter += 1
+    mean = sum / counter
+    return str(mean)
 
     # TODO:
     # MAKE doTask(array):

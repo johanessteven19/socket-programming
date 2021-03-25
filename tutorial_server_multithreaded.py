@@ -44,18 +44,6 @@ def socket_handler(connection: socket.socket, address: Tuple[str, int]):
     print(f"Connection with [{address}] is lost")            
     connection.close()
 
-    # NOTES
-    # print(f"Receive connection from {address}")
-
-    # input_value_bytes = connection.recv(BUFFER_SIZE)
-    # input_value = input_value_bytes.decode("UTF-8")
-    # print(f"Receive input from {address}: {input_value}")
-
-    # output_value = logic(input_value)
-    # output_value_bytes = output_value.encode("UTF-8")
-
-    # connection.send(output_value_bytes)
-    # connection.close()
 
 
 
