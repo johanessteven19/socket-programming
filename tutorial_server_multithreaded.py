@@ -2,10 +2,11 @@
 
 import socket
 import threading
+import random
 from typing import Tuple
 
 SERVER_NAME = ""
-SERVER_PORT = 4321
+SERVER_PORT = 4322
 BUFFER_SIZE = 1024
 
 format = "UTF-8"
@@ -19,6 +20,14 @@ def socket_handler(connection: socket.socket, address: Tuple[str, int]):
         command = input("Input Command: ")
         if command == "send":
             send_message = input(">")
+            if send_message == 'random':
+                length = input('''>Enter length of list
+>''')
+                a = input('''>Enter least possible value
+>''')
+                b = input('''>Enter most possible value
+>''')
+                send_message = random_numbers(int(length), int(a), int(b))
             connection.send(send_message.encode(format))
         elif command == "check":
             send_message = "check"
@@ -44,7 +53,12 @@ def socket_handler(connection: socket.socket, address: Tuple[str, int]):
     print(f"Connection with [{address}] is lost")            
     connection.close()
 
-
+def random_numbers(length, a, b):
+    result = ''
+    for i in range(length):
+        result += str(random.randint(a,b)) + ','
+    return result[:-1]
+    
 
 
 def main():

@@ -4,7 +4,7 @@ import socket
 from queue import Queue
 
 SERVER_IP = "127.0.0.1"
-SERVER_PORT = 4321
+SERVER_PORT = 4322
 BUFFER_SIZE = 1024
 
 format = "UTF-8"
@@ -36,7 +36,7 @@ def main():
                     # parameter = task.get()
                     # send_message = doTask(parameter.split(","))
                     param = pArr(task.get())
-                    # send_message = doTask(param)
+                    send_message = doTask(param)
                     sc.send(send_message.encode(format))
                     print(f"1 task done, remaining task: {str(task.qsize())}")
                 elif command == "done":
@@ -55,6 +55,12 @@ def main():
             task.put(command_bytes)
     sc.close()
 
+def doTask(num_list):
+    e = mean(num_list)
+    o = modus(num_list)
+    s = bubbleSort(num_list)
+    result = f'mean: {e}, modus: {o}, sorted: {s}'
+    return result
 
 def pArr(param):
     li = param.split(",")
@@ -63,12 +69,12 @@ def pArr(param):
     return li
 
 def mean(array):
-    sum, counter, mean = 0, 0, 0
+    s, counter, m = 0, 0, 0
     for i in range(len(array)):
-        sum += array[i]
+        s += array[i]
         counter += 1
-    mean = sum / counter
-    return str(mean)
+    m = s / counter
+    return str(m)
 
 def modus(array):
     max_value = array[0]
@@ -76,6 +82,36 @@ def modus(array):
         if element > max_value:
             max_value = element
     return str(max_value)
+
+def bubbleSort(num_list):
+    n = len(num_list)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if num_list[j] > num_list[j+1]:
+                num_list[j], num_list[j+1] = num_list[j+1], num_list[j]
+    return str(num_list)
+
+def quickSort(num_list, first_index, last_index):
+    quickSortRecursion(num_list, first_index, last_index)
+    return str(num_list)
+
+def quickSortRecursion(num_list, first_index, last_index):
+    if first_index < last_index:
+        partition_index = partition(num_list, first_index, last_index)
+        quickSortRecursion(num_list, first_index, partition_index-1)
+        quickSortRecursion(num_list, partition_index+1, last_index)
+    return num_list
+
+def partition(num_list, first_index, last_index):
+    pivot = num_list[-1]
+    i = first_index-1
+    for j in range(first_index, last_index):
+        if num_list[j] <= pivot:
+            i += 1
+            num_list[i], num_list[j] = num_list[j], num_list[i]
+    i += 1
+    num_list[i], num_list[last_index] = num_list[last_index], num_list[i]
+    return i
 
     # TODO:
     # MAKE doTask(array):
