@@ -71,11 +71,13 @@ def main():
     sc.close()
 
 def doTask(num_list):
-    e = mean(num_list)
-    o = modus(num_list)
-    s = bubbleSort(num_list)
-    x = median(num_list)
-    result = f'mean: {e}, modus: {o}, sorted: {s}, median: {x}'
+    a = mean(num_list)
+    m = modus(num_list)
+    o = bubbleSort(num_list)
+    g = median(num_list)
+    u = smallest(o)
+    s = highest(o)
+    result = f'mean: {a}, modus: {m}, sorted: {o}, median: {g}, smallest value: {u}, highest value: {s}'
     return result
 
 def pArr(param):
@@ -93,14 +95,36 @@ def mean(array):
     return str(m)
 
 def modus(array):
-    return str(stats.mode(array)[0][0])
+    dic = {}
+
+    for element in li:
+        dic[element] = 0
+
+    for element in li:
+        dic[element] += 1
+
+    max_freq = 0
+    for key, value in dic.items():
+        if value > max_freq:
+            max_freq = value
+
+    mode = []
+    for key, value in dic.items():
+        if value == max_freq:
+            mode.append(key)
+
+    result = ""
+    for val in mode:
+        result += str(val) + " "
+
+    return result
 
 def median(array):
     lstLen = len(array)
     if lstLen % 2 == 0:
         return (array[lstLen//2]+array[(lstLen//2)-1])/2
     else:
-        return array[len//2]
+        return array[lstLen//2]
 
 def bubbleSort(num_list):
     n = len(num_list)
@@ -109,6 +133,12 @@ def bubbleSort(num_list):
             if num_list[j] > num_list[j+1]:
                 num_list[j], num_list[j+1] = num_list[j+1], num_list[j]
     return str(num_list)
+
+def smallest(array):
+    return str(array[0])
+
+def highest(array):
+    return str(array[-1])
 
 def quickSort(num_list, first_index, last_index):
     quickSortRecursion(num_list, first_index, last_index)
