@@ -15,26 +15,20 @@ def main():
     print(f"Connected to Server([IP:{SERVER_IP}],[PORT:{SERVER_PORT}]")
     status = True
     task = Queue(maxsize=3)
-    
     while status:
         print(". . .")
         command = sc.recv(BUFFER_SIZE)
         command_bytes = command.decode(format)
         if command_bytes == "check":
             print("Server is checking your status")
-            # checkStat(task)
             send_message = checkStat(task)
             sc.send(send_message.encode(format))
         elif command_bytes == "wait":
             print("Server is waiting for your input")
-            # DO TASK HERE
             tStatus = True
             while tStatus:
                 command = input(">")
                 if command == "do":
-                    # STILL EXAMPLE MIGHT CHANGE LATER
-                    # parameter = task.get()
-                    # send_message = doTask(parameter.split(","))
                     param = pArr(task.get())
                     send_message = doTask(param)
                     sc.send(send_message.encode(format))
@@ -60,14 +54,14 @@ def main():
             else:
                 send_message = "Queue is full"
                 sc.send(send_message.encode(format))
-
     sc.close()
 
 def doTask(num_list):
     e = mean(num_list)
     o = modus(num_list)
     s = bubbleSort(num_list)
-    result = f'mean: {e}, modus: {o}, sorted: {s}'
+    x = median(num_list)
+    result = f'mean: {e}, modus: {o}, sorted: {s}, median: {x}'
     return result
 
 def pArr(param):
@@ -90,6 +84,13 @@ def modus(array):
         if element > max_value:
             max_value = element
     return str(max_value)
+
+def median(array):
+    lstLen = len(array)
+    if lstLen % 2 == 0:
+        return (array[lstLen//2]+array[(lstLen//2)-1])/2
+    else:
+        return array[len//2]
 
 def bubbleSort(num_list):
     n = len(num_list)
